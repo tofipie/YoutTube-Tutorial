@@ -7,3 +7,4 @@ beautifulsoup4
 faiss-cpu
 ollama
 sentence_transformers
+langchain-community

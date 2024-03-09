@@ -10,7 +10,17 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain.chains import create_retrieval_chain
 import time
 from dotenv import load_dotenv
+from langchain.llms import HuggingFaceHub
+from langchain.embeddings import HuggingFaceEmbeddings
 
+#llm = HuggingFaceHub(repo_id="google/flan-t5-xxl",
+ #                   model_kwargs={"temperature":0.5, "max_length":512},huggingfacehub_api_token='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'),
+
+
+embeddings = HuggingFaceEmbeddings(
+        model_name="sentence-transformers/all-MiniLM-L6-v2",
+        model_kwargs={"device": "cpu"},
+    )
 load_dotenv()  #
 
 groq_api_key = os.environ['GROQ_API_KEY']
@@ -18,7 +28,7 @@ groq_api_key = os.environ['GROQ_API_KEY']
 
 if "vector" not in st.session_state:
 
-    st.session_state.embeddings = OllamaEmbeddings()
+    st.session_state.embeddings = embeddings #OllamaEmbeddings()
 
     st.session_state.loader = WebBaseLoader("https://paulgraham.com/greatwork.html")
     st.session_state.docs = st.session_state.loader.load()

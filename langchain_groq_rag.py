@@ -12,7 +12,7 @@ import time
 from dotenv import load_dotenv
 from langchain.llms import HuggingFaceHub
 from langchain.embeddings import HuggingFaceEmbeddings
-
+from langchain_community.embeddings import HuggingFaceEmbeddings
 #llm = HuggingFaceHub(repo_id="google/flan-t5-xxl",
  #                   model_kwargs={"temperature":0.5, "max_length":512},huggingfacehub_api_token='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'),
 

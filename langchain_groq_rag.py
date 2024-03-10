@@ -76,6 +76,14 @@ if prompt:
         # Find the relevant chunks
         for i, doc in enumerate(response["context"]):
             # print(doc)
-            # st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+            st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+         #   st.write(doc.page_content)
+            st.write("--------------------------------")
+
+    with st.expander("Document Similarity Search"):
+        # Find the relevant chunks
+        for i, doc in enumerate(response["context"]):
+            # print(doc)
+         #   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
             st.write(doc.page_content)
             st.write("--------------------------------")

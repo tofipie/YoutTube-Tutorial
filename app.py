@@ -14,6 +14,8 @@ from langchain.llms import HuggingFaceHub
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
+from langchain.document_loaders import PyPDFDirectoryLoader
+
 
 st.sidebar.title("App Description")
 with st.sidebar:
@@ -39,7 +41,7 @@ if "vector" not in st.session_state:
 
     st.session_state.embeddings = embeddings #OllamaEmbeddings()
 
-    st.session_state.loader = WebBaseLoader("https://paulgraham.com/greatwork.html")
+    st.session_state.loader = PyPDFDirectoryLoader("./pdfs/") 
     st.session_state.docs = st.session_state.loader.load()
 
     st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)

@@ -3,7 +3,7 @@ import streamlit as st
 
 def get_data_files():
     data_files = []
-    for dirname, _, filenames in os.walk("newdata"):
+    for dirname, _, filenames in os.walk("pdfs"):
         for filename in filenames:
             data_files.append(os.path.join(filename))
     return data_files

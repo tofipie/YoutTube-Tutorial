@@ -1,8 +1,8 @@
 import os
 import streamlit as st
 from langchain_groq import ChatGroq
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_community.embeddings import OllamaEmbeddings
+#from langchain_community.document_loaders import WebBaseLoader
+#from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -12,7 +12,7 @@ import time
 from dotenv import load_dotenv
 from langchain.llms import HuggingFaceHub
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain_community.embeddings import HuggingFaceEmbeddings
+#from langchain_community.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 

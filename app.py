@@ -110,7 +110,7 @@ if prompt:
     prompt=translation_hebrew
     )
 
-    translated_prompt = translation_chain.run({"text": response['answer']})
+    translated_prompt = translation_chain.run({"text": prompt})
 
     print(f"Response time: {time.process_time() - start}")
 

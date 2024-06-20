@@ -66,7 +66,7 @@ I will tip you $200 if the user finds the answer helpful.
 
 Question: {input}""")
 
-document_chain = create_stuff_documents_chain(llm, prompt) #original
+document_chain = create_stuff_documents_chain(llm, prompt)
 
 retriever = st.session_state.vector.as_retriever()
 retrieval_chain = create_retrieval_chain(retriever, document_chain)

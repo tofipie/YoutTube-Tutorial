@@ -7,6 +7,8 @@ from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.prompts import PromptTemplate
+
 from langchain.chains import create_retrieval_chain
 import time
 from dotenv import load_dotenv
@@ -15,7 +17,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 #from langchain_community.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
-
+from langchain.chains import LLMChain
 
 st.sidebar.title("App Description")
 with st.sidebar:
@@ -65,7 +67,25 @@ I will tip you $200 if the user finds the answer helpful.
 
 Question: {input}""")
 
-document_chain = create_stuff_documents_chain(llm, prompt)
+translated_prompt = 
+
+translation_prompt_template = PromptTemplate(
+    input_variables=["text"],
+    template="""Translate the following Hebrew text to English:
+    Input text: {text}
+    Translation:
+    """
+)
+
+translation_chain = LLMChain(
+    llm=llm,
+    prompt=translation_prompt_template
+)
+
+translated_prompt = translation_chain.run({"text": 'באיזה מקרה האישה תסכים להתגייס לצבא?'})
+document_chain = create_stuff_documents_chain(llm, translated_prompt)
+
+#document_chain = create_stuff_documents_chain(llm, prompt) #original
 
 retriever = st.session_state.vector.as_retriever()
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
@@ -78,9 +98,26 @@ if prompt:
     # Then pass the prompt to the LLM
     start = time.process_time()
     response = retrieval_chain.invoke({"input": prompt})
+    #translate response:
+
+    translation_hebrew = PromptTemplate(
+        input_variables=["text"],
+        template="""Translate the following English text to Hebrew:
+        Input text: {text}
+        Translation:
+        """)
+
+    translation_chain = LLMChain(
+    llm=llm,
+    prompt=translation_hebrew
+    )
+
+    translated_prompt = translation_chain.run({"text": response['answer']})
+
     print(f"Response time: {time.process_time() - start}")
 
-    st.write(response["answer"])
+  #  st.write(response["answer"]) original answer
+    st.write(translated_prompt)
 
     # With a streamlit expander
     with st.expander("Document Similarity Search"):

@@ -61,6 +61,18 @@ llm=llm,
 prompt=translation_prompt_template
 )
 
+translation_hebrew = PromptTemplate(
+input_variables=["text"],
+template="""Translate the following English text to Hebrew:
+Input text: {text}
+Translation:
+""")
+
+translation_chain_hebrew = LLMChain(
+llm=llm,
+prompt=translation_hebrew
+)
+
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
@@ -86,8 +98,11 @@ if prompt:
  print(f"Response time: {time.process_time() - start}")
  
  st.write('Translation:'+ translated_prompt) #added
- st.write(response["answer"])
- 
+ #st.write(response["answer"]) #translate to hebrew
+#""" """"""""""""""""""""""""""""""""
+ translated_answer = translation_chain_hebrew.run({"text": response['answer']})
+ st.write(translated_answer)
+# """""""""""""""""""""""""""""""
  # With a streamlit expander
  with st.expander("Document Similarity Search"):
   

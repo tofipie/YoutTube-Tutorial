@@ -17,6 +17,8 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
+from transformers import pipeline
+
 st.title("Chat with Docs - AWS bedrock and Claude :) ")
 st.sidebar.title("App Description")
 with st.sidebar:
@@ -43,12 +45,15 @@ if "vector" not in st.session_state:
  st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
  st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
- 
+
 llm = ChatGroq(
  groq_api_key=groq_api_key,
  model_name='mixtral-8x7b-32768'
  )
+#~~~~~~~~~~~~~~~~~~~~~~`
+translator = pipeline("translation_he_to_en", model="facebook/m2m100_418M",kwargs = ({'max_length ':500}))
 
+#~~~~~~~~~~~~~~~~~~~~~~~
 translation_prompt_template = PromptTemplate(
 input_variables=["text"],
 template="""
@@ -90,7 +95,8 @@ prompt = st.text_input("Input your prompt here")
 # If the user hits enter
 if prompt:
  
- translated_prompt = translation_chain.run({"text": prompt})
+ #translated_prompt = translation_chain.run({"text": prompt}) #using llm
+translated_prompt = translator(prompt) #using m2m
 
 # Then pass the prompt to the LLM
  start = time.process_time()

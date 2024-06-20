@@ -57,7 +57,7 @@ llm = ChatGroq(
             model_name='mixtral-8x7b-32768'
     )
 
-prompt = ChatPromptTemplate.from_template("""
+prompt1 = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context. 
 Think step by step before providing a detailed answer. 
 I will tip you $200 if the user finds the answer helpful. 
@@ -80,7 +80,7 @@ translation_chain = LLMChain(
     prompt=translation_prompt_template
 )
 
-document_chain = create_stuff_documents_chain(llm, prompt)
+document_chain = create_stuff_documents_chain(llm, prompt1)
 
 #document_chain = create_stuff_documents_chain(llm, prompt) #original
 

@@ -24,7 +24,7 @@ with st.sidebar:
  st.write("Files loaded in VectorDB:")
  for file in get_data_files():
   st.markdown("- " + file)
-  st.write('Made by Noa Cohen')
+ st.write('Made by Noa Cohen')
 
 #llm = HuggingFaceHub(repo_id="google/flan-t5-xxl",
 # model_kwargs={"temperature":0.5, "max_length":512},huggingfacehub_api_token='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'),

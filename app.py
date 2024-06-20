@@ -71,49 +71,17 @@ document_chain = create_stuff_documents_chain(llm, prompt)
 retriever = st.session_state.vector.as_retriever()
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 
-query = st.text_input("Input your prompt here")
+prompt = st.text_input("Input your prompt here")
 
-
-
-translation_prompt_template = PromptTemplate(
-    input_variables=["text"],
-    template="""Translate the following Hebrew text to English:
-    Input text: {text}
-    Translation:
-    """
-)
-
-translation_chain = LLMChain(
-    llm=llm,
-    prompt=translation_prompt_template
-)
-
-translation_hebrew = PromptTemplate(
-        input_variables=["text"],
-        template="""Translate the following English text to Hebrew:
-        Input text: {text}
-        Translation:
-        """)
-
-translation_chain2 = LLMChain(
-    llm=llm,
-    prompt=translation_hebrew
-    )
 
 # If the user hits enter
-if query:
+if prompt:
     # Then pass the prompt to the LLM
     start = time.process_time()
-    translated_prompt = translation_chain.run({"text": query})
-    response = retrieval_chain.invoke({"input": translated_prompt}) #original
-    
+    response = retrieval_chain.invoke({"input": prompt})
     print(f"Response time: {time.process_time() - start}")
 
-  #  st.write(response["answer"]) original answer
-    
-    translated_prompt = translation_chain2.run({"text": response['answer']})
-
-    st.write(translated_prompt)
+    st.write(response["answer"])
 
     # With a streamlit expander
     with st.expander("Document Similarity Search"):
@@ -131,4 +99,3 @@ if query:
       #      st.write(doc.page_content)
        #     st.write("--------------------------------")
             
-

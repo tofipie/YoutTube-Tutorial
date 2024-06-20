@@ -77,9 +77,9 @@ if prompt:
   
   # Find the relevant chunks
   for i, doc in enumerate(response["context"]):
-  st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
-  st.write(doc.page_content)
-  st.write("------ --------------------------")
+   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+   st.write(doc.page_content)
+   st.write("------ --------------------------")
 
 
 

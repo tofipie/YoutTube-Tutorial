@@ -17,7 +17,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
-
+st.title("Chat with Docs - AWS bedrock and Claude :) ")
 st.sidebar.title("App Description")
 with st.sidebar:
  st.button('New Chat', on_click=reset_conversation)
@@ -25,7 +25,7 @@ with st.sidebar:
  for file in get_data_files():
   st.markdown("- " + file)
   st.write('Made by Noa Cohen')
-  
+
 #llm = HuggingFaceHub(repo_id="google/flan-t5-xxl",
 # model_kwargs={"temperature":0.5, "max_length":512},huggingfacehub_api_token='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'),
 
@@ -43,7 +43,6 @@ if "vector" not in st.session_state:
  st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
  st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
- st.title("Chat with Docs - AWS bedrock and Claude :) ")
  
 llm = ChatGroq(
  groq_api_key=groq_api_key,

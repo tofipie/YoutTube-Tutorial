@@ -84,8 +84,10 @@ if prompt:
  start = time.process_time()
  response = retrieval_chain.invoke({"input": translated_prompt}) #prompt
  print(f"Response time: {time.process_time() - start}")
- st.write(response["answer"])
+ 
  st.write('Translation:'+ translated_prompt) #added
+ st.write(response["answer"])
+ 
  # With a streamlit expander
  with st.expander("Document Similarity Search"):
   

@@ -80,8 +80,7 @@ translation_chain = LLMChain(
     prompt=translation_prompt_template
 )
 
-translated_prompt = translation_chain.run({"text": 'באיזה מקרה האישה תסכים להתגייס לצבא?'})
-document_chain = create_stuff_documents_chain(llm, translated_prompt)
+document_chain = create_stuff_documents_chain(llm, prompt)
 
 #document_chain = create_stuff_documents_chain(llm, prompt) #original
 
@@ -95,7 +94,11 @@ prompt = st.text_input("Input your prompt here")
 if prompt:
     # Then pass the prompt to the LLM
     start = time.process_time()
-    response = retrieval_chain.invoke({"input": prompt})
+
+    translated_prompt = translation_chain.run({"text": 'באיזה מקרה האישה תסכים להתגייס לצבא?'})
+    response = retrieval_chain.invoke({"input": translated_prompt})
+
+  #  response = retrieval_chain.invoke({"input": prompt}) #original
     #translate response:
 
     translation_hebrew = PromptTemplate(

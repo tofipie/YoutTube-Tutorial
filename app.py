@@ -48,6 +48,19 @@ llm = ChatGroq(
  groq_api_key=groq_api_key,
  model_name='mixtral-8x7b-32768'
  )
+
+translation_prompt_template = PromptTemplate(
+input_variables=["text"],
+template="""
+Translate the following Hebrew text to English:
+Input text: {text}
+Translation:
+""")
+translation_chain = LLMChain(
+llm=llm,
+prompt=translation_prompt_template
+)
+
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
@@ -65,6 +78,8 @@ prompt = st.text_input("Input your prompt here")
 # If the user hits enter
 if prompt:
  
+ translated_prompt = translation_chain.run({"text": prompt})
+
 # Then pass the prompt to the LLM
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt})
@@ -83,7 +98,52 @@ if prompt:
 
 
  
+"""
 
+translation_prompt_template = PromptTemplate(
+input_variables=["text"],
+template="""Translate the following Hebrew text to English:
+Input text: {text}
+Translation:
+"""
+)
+translation_chain = LLMChain(
+llm=llm,
+prompt=translation_prompt_template
+)
+translation_hebrew = PromptTemplate(
+input_variables=["text"],
+template="""Translate the following English text to Hebrew:
+Input text: {text}
+Translation:
+""")
+translation_chain2 = LLMChain(
+llm=llm,
+prompt=translation_hebrew
+)
+# If the user hits enter
+if query:
+# Then pass the prompt to the LLM
+start = time.process_time()
+translated_prompt = translation_chain.run({"text": query})
+response = retrieval_chain.invoke({"input": translated_prompt}) #original
+
+print(f"Response time: {time.process_time() - start}")
+# st.write(response["answer"]) original answer
+
+translated_prompt = translation_chain2.run({"text": response['answer']})
+st.write(translated_prompt)
+# With a streamlit expander
+with st.expander("Document Similarity Search"):
+# Find the relevant chunks
+for i, doc in enumerate(response["context"]):
+st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+st.write(doc.page_content)
+st.write("------ --------------------------")
+
+
+
+"""
 
 
 

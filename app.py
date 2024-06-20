@@ -95,10 +95,7 @@ if prompt:
     # Then pass the prompt to the LLM
     start = time.process_time()
 
-    translated_prompt = translation_chain.run({"text": 'באיזה מקרה האישה תסכים להתגייס לצבא?'})
-    response = retrieval_chain.invoke({"input": translated_prompt})
-
-  #  response = retrieval_chain.invoke({"input": prompt}) #original
+    response = retrieval_chain.invoke({"input": prompt}) #original
     #translate response:
 
     translation_hebrew = PromptTemplate(

@@ -67,8 +67,6 @@ I will tip you $200 if the user finds the answer helpful.
 
 Question: {input}""")
 
-translated_prompt = 
-
 translation_prompt_template = PromptTemplate(
     input_variables=["text"],
     template="""Translate the following Hebrew text to English:

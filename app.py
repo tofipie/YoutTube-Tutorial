@@ -1,31 +1,18 @@
 import os
 import streamlit as st
 from langchain_groq import ChatGroq
-#from langchain_community.document_loaders import WebBaseLoader
-#from langchain_community.embeddings import OllamaEmbeddings
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.prompts import PromptTemplate
-
 from langchain.chains import create_retrieval_chain
 import time
 from dotenv import load_dotenv
 from langchain.llms import HuggingFaceHub
 from langchain.embeddings import HuggingFaceEmbeddings
-#from langchain_community.embeddings import HuggingFaceEmbeddings
-from utils import get_data_files, reset_conversation
-from langchain.document_loaders import PyPDFDirectoryLoader
-from langchain.chains import LLMChain
-
-st.sidebar.title("App Description")
-with st.sidebar:
-    st.button('New Chat', on_click=reset_conversation)
-    st.write("Files loaded in VectorDB:")
-    for file in get_data_files():
-        st.markdown("- " + file)
-    st.write('Made by Noa Cohen')
+from langchain_community.embeddings import HuggingFaceEmbeddings
 #llm = HuggingFaceHub(repo_id="google/flan-t5-xxl",
  #                   model_kwargs={"temperature":0.5, "max_length":512},huggingfacehub_api_token='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'),
 
@@ -43,19 +30,20 @@ if "vector" not in st.session_state:
 
     st.session_state.embeddings = embeddings #OllamaEmbeddings()
 
-    st.session_state.loader = PyPDFDirectoryLoader("./pdfs/") 
+    st.session_state.loader = WebBaseLoader("https://paulgraham.com/greatwork.html")
     st.session_state.docs = st.session_state.loader.load()
 
     st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
     st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 
-st.title("Chat with Docs - AWS bedrock and Claude :) ")
+st.title("Chat with Docs - Groq Edition :) ")
 
 llm = ChatGroq(
             groq_api_key=groq_api_key, 
             model_name='mixtral-8x7b-32768'
     )
+
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context. 
 Think step by step before providing a detailed answer. 
@@ -98,4 +86,5 @@ if prompt:
          #   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
       #      st.write(doc.page_content)
        #     st.write("--------------------------------")
+            
             

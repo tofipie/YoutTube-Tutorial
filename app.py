@@ -96,7 +96,7 @@ prompt = st.text_input("Input your prompt here")
 if prompt:
  
  #translated_prompt = translation_chain.run({"text": prompt}) #using llm
-translated_prompt = translator(prompt) #using m2m
+ translated_prompt = translator(prompt) #using m2m
 
 # Then pass the prompt to the LLM
  start = time.process_time()

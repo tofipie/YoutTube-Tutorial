@@ -44,8 +44,6 @@ if "vector" not in st.session_state:
  st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
  st.title("Chat with Docs - AWS bedrock and Claude :) ")
-st.title("Chat with Docs - Groq Edition :) ")
-
  
 llm = ChatGroq(
  groq_api_key=groq_api_key,

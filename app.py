@@ -40,10 +40,13 @@ groq_api_key = os.environ['GROQ_API_KEY']
 
 if "vector" not in st.session_state:
  st.session_state.embeddings = embeddings #OllamaEmbeddings()
- st.session_state.loader = PyPDFDirectoryLoader("./pdfs/")
- st.session_state.docs = st.session_state.loader.load()
- st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
- st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
+ #st.session_state.loader = PyPDFDirectoryLoader("./pdfs/")
+ #st.session_state.docs = st.session_state.loader.load()
+ #st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+ #st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
+
+ docsearch = FAISS.from_documents( docs,  bedrock_embeddings)
+ st.session_state.documents = 
  st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 
 llm = ChatGroq(

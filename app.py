@@ -38,7 +38,6 @@ model_kwargs={"device": "cpu"},
 load_dotenv() #
 groq_api_key = os.environ['GROQ_API_KEY']
 DB_FAISS_PATH = "vectorstores/db_faiss"
-db = FAISS.load_local(DB_FAISS_PATH, embeddings)
 
 if "vector" not in st.session_state:
  st.session_state.embeddings = embeddings #OllamaEmbeddings()
@@ -48,8 +47,8 @@ if "vector" not in st.session_state:
  #st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  #st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 
- #db = FAISS.load_local(DB_FAISS_PATH, embeddings)
- #st.session_state.vector = db
+ db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
+ st.session_state.vector = db
 
 llm = ChatGroq(
  groq_api_key=groq_api_key,

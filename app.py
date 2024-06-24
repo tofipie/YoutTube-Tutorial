@@ -63,32 +63,9 @@ llm = ChatGroq(
  )
 #~~~~~~~~~~~~~~~~~~~~~~`
 translator = pipeline("translation_he_to_en", model="facebook/m2m100_418M",kwargs = ({'max_length ':500}))
+translator2 = pipeline("translation_en_to_he", model="facebook/m2m100_418M",kwargs = ({'max_length ':500}))
 
 #~~~~~~~~~~~~~~~~~~~~~~~
-translation_prompt_template = PromptTemplate(
-input_variables=["text"],
-template="""
-Translate the following Hebrew text to English:
-Input text: {text}
-Translation:
-""")
-translation_chain = LLMChain(
-llm=llm,
-prompt=translation_prompt_template
-)
-
-translation_hebrew = PromptTemplate(
-input_variables=["text"],
-template="""Translate the following English text to Hebrew:
-Input text: {text}
-Translation:
-""")
-
-translation_chain_hebrew = LLMChain(
-llm=llm,
-prompt=translation_hebrew
-)
-
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
@@ -121,16 +98,16 @@ if prompt:
  st.write('Translation:'+ translated_prompt) #added
  #st.write(response["answer"]) #translate to hebrew
 #""" """"""""""""""""""""""""""""""""
- translated_answer = translation_chain_hebrew.run({"text": response['answer']})
+ translated_answer = translator2(response['answer']) #using m2m
  st.write(translated_answer)
 # """""""""""""""""""""""""""""""
  # With a streamlit expander
  with st.expander("Document Similarity Search"):
   
   # Find the relevant chunks
-  for i, doc in enumerate(response["context"]):
-   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
-   st.write(doc.page_content)
-   st.write("------ --------------------------")
+ for i, doc in enumerate(response["context"]):
+  print(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
+ # print(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+  print("------ --------------------------")
 
 

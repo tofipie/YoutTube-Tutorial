@@ -103,11 +103,9 @@ if prompt:
 # """""""""""""""""""""""""""""""
  # With a streamlit expander
  with st.expander("Document Similarity Search"):
-  
-  # Find the relevant chunks
- for i, doc in enumerate(response["context"]):
-  print(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
+  for i, doc in enumerate(response["context"]):
+   print(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
  # print(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
-  print("------ --------------------------")
+   print("------ --------------------------")
 
 

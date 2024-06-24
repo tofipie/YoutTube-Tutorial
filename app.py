@@ -39,8 +39,8 @@ load_dotenv() #
 groq_api_key = os.environ['GROQ_API_KEY']
 DB_FAISS_PATH = "vectorstores/db_faiss"
 
-if "vector" not in st.session_state:
- st.session_state.embeddings = embeddings #OllamaEmbeddings()
+#if "vector" not in st.session_state:
+# st.session_state.embeddings = embeddings #OllamaEmbeddings()
  #st.session_state.loader = PyPDFDirectoryLoader("./pdfs/")
  #st.session_state.docs = st.session_state.loader.load()
  #st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -48,7 +48,7 @@ if "vector" not in st.session_state:
  #st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 
  db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
- st.session_state.vector = db
+# st.session_state.vector = db
 
 llm = ChatGroq(
  groq_api_key=groq_api_key,
@@ -92,9 +92,13 @@ I will tip you $200 if the user finds the answer helpful.
 Question: {input}""")
 
 document_chain = create_stuff_documents_chain(llm, prompt)
-retriever = st.session_state.vector.as_retriever()
+#retriever = st.session_state.vector.as_retriever()
+retriever =db.as_retriever(search_type="similarity")
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 prompt = st.text_input("Input your prompt here")
+
+
+# expose this index in a retriever interface
 
 # If the user hits enter
 if prompt:

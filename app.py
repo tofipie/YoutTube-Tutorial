@@ -50,7 +50,7 @@ DATA_PATH = "pdfs/df.csv"
  #st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  #st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 ##########
-loader = CSVLoader(file_path=DATA_PATH,glob ="*xlsx", metadata_columns=["hebrew"],encoding='cp1255')
+loader = CSVLoader(file_path=DATA_PATH, metadata_columns=["hebrew"],encoding='cp1255')
 docs = loader.load()
 db = FAISS.from_texts(docs, embedding=embeddings)
  ##############

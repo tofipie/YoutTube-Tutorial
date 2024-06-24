@@ -18,6 +18,8 @@ from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
 from transformers import pipeline
+from langchain_community.document_loaders.csv_loader import CSVLoader
+
 
 st.title("Chat with Docs - AWS bedrock and Claude :) ")
 st.sidebar.title("App Description")
@@ -37,7 +39,8 @@ model_kwargs={"device": "cpu"},
  )
 load_dotenv() #
 groq_api_key = os.environ['GROQ_API_KEY']
-DB_FAISS_PATH = "vectorstores/db_faiss"
+#DB_FAISS_PATH = "vectorstores/db_faiss"
+DATA_PATH = "pdfs/df.csv"
 
 #if "vector" not in st.session_state:
 # st.session_state.embeddings = embeddings #OllamaEmbeddings()
@@ -46,8 +49,12 @@ DB_FAISS_PATH = "vectorstores/db_faiss"
  #st.session_state.text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
  #st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  #st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
-
-db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
+##########
+loader = CSVLoader(file_path=DATA_PATH,glob ="*xlsx", metadata_columns=["hebrew"],encoding='cp1255')
+docs = loader.load()
+db = FAISS.from_texts(docs, embedding=embeddings)
+ ##############
+#db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
 # st.session_state.vector = db
 
 llm = ChatGroq(

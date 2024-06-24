@@ -47,7 +47,7 @@ DB_FAISS_PATH = "vectorstores/db_faiss"
  #st.session_state.documents = st.session_state.text_splitter.split_documents( st.session_state.docs)
  #st.session_state.vector = FAISS.from_documents(st.session_state.documents, st.session_state.embeddings)
 
- db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
+db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
 # st.session_state.vector = db
 
 llm = ChatGroq(

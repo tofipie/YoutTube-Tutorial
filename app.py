@@ -52,7 +52,7 @@ DATA_PATH = "data/df.csv"
 ##########
 loader = CSVLoader(file_path=DATA_PATH, metadata_columns=["hebrew"],encoding='cp1255')
 docs = loader.load()
-db = FAISS.from_texts(docs, embedding=embeddings)
+db = FAISS.from_documents(docs, embedding=embeddings)
  ##############
 #db = FAISS.load_local(DB_FAISS_PATH, embeddings,allow_dangerous_deserialization=True)
 # st.session_state.vector = db

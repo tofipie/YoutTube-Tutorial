@@ -99,7 +99,7 @@ if prompt:
 
 # Then pass the prompt to the LLM
  start = time.process_time()
- response = retrieval_chain.invoke({"input": translated_prompt[0])#['translation_text']}) 
+ response = retrieval_chain.invoke({"input": translated_prompt[0])})#['translation_text']}) 
  print(f"Response time: {time.process_time() - start}")
  
  st.write('Translation:'+ translated_prompt) #added

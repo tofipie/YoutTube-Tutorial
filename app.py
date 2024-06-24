@@ -40,7 +40,7 @@ model_kwargs={"device": "cpu"},
 load_dotenv() #
 groq_api_key = os.environ['GROQ_API_KEY']
 #DB_FAISS_PATH = "vectorstores/db_faiss"
-DATA_PATH = "./data/df.csv"
+DATA_PATH = "./data/text+translation.csv"
 
 #if "vector" not in st.session_state:
 # st.session_state.embeddings = embeddings #OllamaEmbeddings()

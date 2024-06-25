@@ -17,11 +17,8 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
-from transformers import pipeline
 from langchain_community.document_loaders.csv_loader import CSVLoader
-
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-from transformers import pipeline
 
 model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
 tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")

@@ -19,7 +19,7 @@ from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
-st.title("Chat with Docs - AWS bedrock and Claude :) ")
+st.title("Chat with Docs using Retreival chain ")
 st.sidebar.title("App Description")
 with st.sidebar:
  st.button('New Chat', on_click=reset_conversation)

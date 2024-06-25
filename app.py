@@ -82,14 +82,13 @@ if prompt:
 # Then pass the prompt to the LLM
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt}) 
- print(f"Response time: {time.process_time() - start}")
  st.write(response["answer"]) #translate to hebrew
 
  # With a streamlit expander
  with st.expander("Document Similarity Search"):
   for i, doc in enumerate(response["context"]):
-   print(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
- # print(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
-   print("------ --------------------------")
-
+   st.write(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
+   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+   st.write(doc.page_content)
+   st.write("--------------------------------")
 

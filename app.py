@@ -1,5 +1,6 @@
 import os
 import torch
+import logging
 import streamlit as st
 from langchain_groq import ChatGroq
 #from langchain_community.document_loaders import WebBaseLoader

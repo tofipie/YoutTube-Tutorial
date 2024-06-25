@@ -88,7 +88,7 @@ if prompt:
  with st.expander("Document Similarity Search"):
   for i, doc in enumerate(response["context"]):
    st.write(f"Source Document # {i+1} : {doc.metadata['hebrew']}")
-   st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
-   st.write(doc.page_content)
+   #st.write(f"Source Document # {i+1} : {doc.metadata['source'].split('/')[-1]}")
+   #st.write(doc.page_content)
    st.write("--------------------------------")
 

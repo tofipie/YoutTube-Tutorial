@@ -1,4 +1,5 @@
 import os
+import torch
 import streamlit as st
 from langchain_groq import ChatGroq
 #from langchain_community.document_loaders import WebBaseLoader
@@ -21,7 +22,26 @@ from langchain_community.document_loaders.csv_loader import CSVLoader
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
 #model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
-#tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
+#tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M
+
+if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+else:
+    device = torch.device("cpu")
+    logging.warning("GPU not found, using CPU, translation will be very slow.")
+
+st.cache(suppress_st_warning=True, allow_output_mutation=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
+def load_model(
+    pretrained_model: str = "facebook/m2m100_1.2B",
+    cache_dir: str = "models/",
+):
+    tokenizer = M2M100Tokenizer.from_pretrained(pretrained_model, cache_dir=cache_dir)
+    model = M2M100ForConditionalGeneration.from_pretrained(
+        pretrained_model, cache_dir=cache_dir
+    ).to(device)
+    model.eval()
+    return tokenizer, model
 
 st.title("Chat with Docs - AWS bedrock and Claude :) ")
 st.sidebar.title("App Description")
@@ -86,13 +106,22 @@ prompt = st.text_input("Input your prompt here")
 
 # If the user hits enter
 if prompt:
+ tokenizer, model = load_model()
+ src_lang = 'he'
+ trg_lang = 'en'
+ tokenizer.src_lang = src_lang
+ with torch.no_grad():
+  encoded_input = tokenizer(prompt, return_tensors="pt").to(device)
+  generated_tokens = model.generate(**encoded_input, forced_bos_token_id=tokenizer.get_lang_id(trg_lang))
+  translated_prompt = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+
  
  #translated_prompt = translation_chain.run({"text": prompt}) #using llm
  #translated_prompt = translator(prompt) #using m2m
- tokenizer.src_lang = "he"
- encoded_hi = tokenizer(prompt, return_tensors="pt")
- generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("en"))
- translated_prompt = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+ #tokenizer.src_lang = "he"
+ #encoded_hi = tokenizer(prompt, return_tensors="pt")
+ #generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("en"))
+ #translated_prompt = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
 
 # Then pass the prompt to the LLM
  start = time.process_time()
@@ -103,11 +132,11 @@ if prompt:
  #st.write(response["answer"]) #translate to hebrew
 #""" """"""""""""""""""""""""""""""""
  #translated_answer = translator2(response['answer']) #using m2m
- tokenizer.src_lang = "en"
- encoded_hi = tokenizer(response['answer'], return_tensors="pt")
- generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("he"))
- translated_answer = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
- st.write(translated_answer)
+ #tokenizer.src_lang = "en"
+ #encoded_hi = tokenizer(response['answer'], return_tensors="pt")
+ #generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("he"))
+ #translated_answer = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)
+ #st.write(translated_answer)
 # """""""""""""""""""""""""""""""
  # With a streamlit expander
  with st.expander("Document Similarity Search"):

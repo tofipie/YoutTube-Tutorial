@@ -9,3 +9,4 @@ pypdf
 sentence_transformers
 langchain-community
 sentencepiece
+torch

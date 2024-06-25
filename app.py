@@ -73,7 +73,7 @@ document_chain = create_stuff_documents_chain(llm, prompt)
 #retriever = st.session_state.vector.as_retriever()
 retriever =db.as_retriever(search_type="similarity")
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
-prompt = st.text_input("Input your prompt here")
+prompt = st.text_input("שאל שאלה...")
 
 # expose this index in a retriever interface
 

@@ -83,7 +83,7 @@ prompt = st.text_input("Input your prompt here")
 if prompt:
 # Then pass the prompt to the LLM
  start = time.process_time()
- response = retrieval_chain.invoke({"input": prompt[0]}) 
+ response = retrieval_chain.invoke({"input": prompt}) 
  print(f"Response time: {time.process_time() - start}")
  st.write(response["answer"]) #translate to hebrew
 

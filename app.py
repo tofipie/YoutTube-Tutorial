@@ -59,12 +59,17 @@ llm = ChatGroq(
  groq_api_key=groq_api_key,
  model_name='mixtral-8x7b-32768'
  )
+llm_translation = ChatGroq(
+ temperature=0,
+ groq_api_key=groq_api_key,
+ model_name='mixtral-8x7b-32768'
+ )
 
 
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
-I will tip you $200 if the user finds the answer helpful. translate the final answer to hebrew.
+I will tip you $200 if the user finds the answer helpful. 
 <context>
 {context}
 </context>
@@ -88,7 +93,7 @@ if prompt:
     """
   )
 
- translation_chain = LLMChain( llm=llm,prompt=translation_prompt_template)
+ translation_chain = LLMChain( llm=llm_translation,prompt=translation_prompt_template)
  prompt = translation_chain.run({"text": prompt})
 ####
 #Then pass the prompt to the LLM

@@ -78,23 +78,19 @@ prompt = st.text_input("שאל שאלה...")
 
 # If the user hits enter
 if prompt:
- 
  #### translate prompt
 
-translation_prompt_template = PromptTemplate(
+ translation_prompt_template = PromptTemplate(
     input_variables=["text"],
     template="""Translate the following Hebrew text to English:
     Input text: {text}
     Translation:
     """
-)
+  )
 
-translation_chain = LLMChain(
-    llm=llm,
-    prompt=translation_prompt_template
-)
+ translation_chain = LLMChain( llm=llm,prompt=translation_prompt_template)
 
-prompt = translation_chain.run({"text": prompt})
+ prompt = translation_chain.run({"text": prompt})
 ####
 #Then pass the prompt to the LLM
  start = time.process_time()

@@ -64,7 +64,7 @@ llm = ChatGroq(
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
-I will tip you $200 if the user finds the answer helpful.
+I will tip you $200 if the user finds the answer helpful. translate the final answer to hebrew.
 <context>
 {context}
 </context>
@@ -89,14 +89,13 @@ if prompt:
   )
 
  translation_chain = LLMChain( llm=llm,prompt=translation_prompt_template)
-
  prompt = translation_chain.run({"text": prompt})
 ####
 #Then pass the prompt to the LLM
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt}) 
- st.write(response["answer"]) #translate to hebrew
  st.write(prompt) #translated prompt
+ st.write(response["answer"]) #translate to hebrew
 
  # With a streamlit expander
  with st.expander("Document Similarity Search"):

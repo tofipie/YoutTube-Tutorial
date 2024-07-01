@@ -96,6 +96,7 @@ if prompt:
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt}) 
  st.write(response["answer"]) #translate to hebrew
+ st.write(prompt) #translated prompt
 
  # With a streamlit expander
  with st.expander("Document Similarity Search"):

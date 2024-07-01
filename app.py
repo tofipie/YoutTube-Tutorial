@@ -18,7 +18,8 @@ from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
 from langchain_community.document_loaders.csv_loader import CSVLoader
-
+from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
+from transformers import pipeline
 st.title("Chat with Docs using Retreival chain ")
 st.sidebar.title("App Description")
 with st.sidebar:
@@ -60,6 +61,9 @@ llm = ChatGroq(
  model_name='mixtral-8x7b-32768'
  )
 
+model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
+tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
+
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
@@ -75,11 +79,16 @@ retriever =db.as_retriever(search_type="similarity")
 retrieval_chain = create_retrieval_chain(retriever, document_chain)
 prompt = st.text_input("שאל שאלה...")
 
-# expose this index in a retriever interface
-
 # If the user hits enter
 if prompt:
-# Then pass the prompt to the LLM
+ 
+ #### translate prompt
+ tokenizer.src_lang = "he"
+ encoded_hi = tokenizer(t, return_tensors="pt")
+ generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("en"))
+ prompt = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+####
+#Then pass the prompt to the LLM
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt}) 
  st.write(response["answer"]) #translate to hebrew

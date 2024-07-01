@@ -60,8 +60,6 @@ llm = ChatGroq(
  model_name='mixtral-8x7b-32768'
  )
 
-model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
-tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
 
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.

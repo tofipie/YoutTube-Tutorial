@@ -99,7 +99,7 @@ if prompt:
 #Then pass the prompt to the LLM
  start = time.process_time()
  response = retrieval_chain.invoke({"input": prompt}) 
- st.write(prompt) #translated prompt
+ st.write(f"Translation: prompt) #translated prompt
  st.write(response["answer"]) #translate to hebrew
 
  # With a streamlit expander

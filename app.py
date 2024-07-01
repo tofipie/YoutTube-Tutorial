@@ -18,8 +18,7 @@ from utils import get_data_files, reset_conversation
 from langchain.document_loaders import PyPDFDirectoryLoader
 from langchain.chains import LLMChain
 from langchain_community.document_loaders.csv_loader import CSVLoader
-from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-from transformers import pipeline
+
 st.title("Chat with Docs using Retreival chain ")
 st.sidebar.title("App Description")
 with st.sidebar:
@@ -83,10 +82,21 @@ prompt = st.text_input("שאל שאלה...")
 if prompt:
  
  #### translate prompt
- tokenizer.src_lang = "he"
- encoded_hi = tokenizer(t, return_tensors="pt")
- generated_tokens = model.generate(**encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("en"))
- prompt = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+
+translation_prompt_template = PromptTemplate(
+    input_variables=["text"],
+    template="""Translate the following Hebrew text to English:
+    Input text: {text}
+    Translation:
+    """
+)
+
+translation_chain = LLMChain(
+    llm=llm,
+    prompt=translation_prompt_template
+)
+
+prompt = translation_chain.run({"text": prompt})
 ####
 #Then pass the prompt to the LLM
  start = time.process_time()
